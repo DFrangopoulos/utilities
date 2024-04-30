@@ -1,0 +1,48 @@
+diff --git a/config.def.h b/config.def.h
+index 6b4964b..efb2c5a 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -1,4 +1,5 @@
+ /* See LICENSE file for copyright and license details. */
++#include <X11/XF86keysym.h>
+ 
+ /* appearance */
+ static const char *fonts[] = {
+@@ -55,11 +56,22 @@ static const Layout layouts[] = {
+ /* commands */
+ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+-static const char *termcmd[]  = { "x-terminal-emulator", NULL };
++static const char *termcmd[]  = { "stterm", "-e", "tmux", NULL };
++static const char *lockcmd[]  = { "slock", NULL };
++
++/*custom utilities*/
++static const char *help_tgl_mute[] = {"/usr/local/bin/dwm_helper.sh","-toggle_mute",NULL,NULL,NULL};
++static const char *help_switch_screen[] = {"/usr/local/bin/dwm_helper.sh","-screen",NULL,NULL,NULL};
++static const char *help_bright_up[] = {"/usr/local/bin/dwm_helper.sh","-bright_up",NULL,NULL,NULL};
++static const char *help_bright_down[] = {"/usr/local/bin/dwm_helper.sh","-bright_down",NULL,NULL,NULL};
++static const char *help_tgl_layout[] = {"/usr/local/bin/dwm_helper.sh","-toggle_layout",NULL,NULL,NULL};
++static const char *volupcmd[] = {"/usr/local/bin/dwm_helper.sh","-vol_up",NULL,NULL,NULL};
++static const char *voldowncmd[] = {"/usr/local/bin/dwm_helper.sh","-vol_down",NULL,NULL,NULL};
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+ 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
++	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lockcmd } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+ 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+@@ -92,6 +104,13 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++        { MODKEY|ShiftMask,             XK_F8,     spawn,                {.v = help_switch_screen} },
++        { MODKEY|ShiftMask,             XK_F9,     spawn,                {.v = help_tgl_layout } },
++	{ 0,                            XF86XK_AudioLowerVolume, spawn,  {.v = voldowncmd } },
++        { 0,                            XF86XK_AudioMute, spawn,         {.v = help_tgl_mute } },
++        { 0,                            XF86XK_AudioRaiseVolume, spawn,  {.v = volupcmd } },
++        { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = help_bright_down } },
++        { 0,                            XF86XK_MonBrightnessUp, spawn,   {.v = help_bright_up } },
+ };
+ 
+ /* button definitions */
